@@ -1,5 +1,6 @@
 # Dynamically-Loaded-Bootstrap-Modal-Component-by-Angular-6
 Dynamically Loaded Bootstrap Modal Component by Angular 6
+#dynamic modal dialog # dynamic modal #display component dynamically #Modal directive #angular 6 modal component #angular 6 modal dialog
 
 Create the application using the Angular CLI command.
 
