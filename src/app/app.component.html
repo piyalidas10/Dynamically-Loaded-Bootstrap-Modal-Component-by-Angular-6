@@ -1,16 +1,16 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="container">
-  <h1 align="center">
-    Welcome to {{ title }}!
-  </h1>
+<div class="container text-center">
+  <h4 align="center">
+    Dynamically Loaded Bootstrap Modal Component by Angular-6
+  </h4>
 
-  
-  <div class="col-md-2">
+<div class="row">
+  <div class="col-md-2 col-md-offset-4">
     <button type="button" 
       class="btn btn-success  btn-block"
       modal-box 
       [title]='"Demo Modal 1"'
-      [componentData]="data1"
+      [componentData]="dataObj1"
       [componentName]="'Demo1Component'">
       Demo Modal 1
     </button>
@@ -21,12 +21,12 @@
       class="btn btn-danger  btn-block"
       modal-box 
       [title]='"Demo Modal 2"'
-      [componentData]="data2"
+      [componentData]="dataObj2"
       [componentName]="'Demo2Component'">
       Demo Modal 2
     </button>
   </div>  
-
+</div>
 
 </div>
 

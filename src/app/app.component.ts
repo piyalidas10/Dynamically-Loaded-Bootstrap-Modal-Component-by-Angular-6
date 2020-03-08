@@ -1,18 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  data1 : string;
-  data2 : string;
+export class AppComponent implements OnInit {
+  dataObj1: any;
+  dataObj2: any;
 
 
   ngOnInit() {
-    this.data1="The content is displayed from Demo1 component";
-    this.data2="The content is displayed from Demo2 component";
+    this.dataObj1 = {
+        heading: 'Modal Heading One',
+        content: 'Lorem Ipsum is simply dummy text of the printing and <a href="#">typesetting industry</a>.'
+    };
+    this.dataObj2 = {
+      heading: 'Modal Heading Two',
+      content: 'Lorem Ipsum is simply dummy text of the printing and <a href="#">typesetting industry</a>.'
+  };
+  }
+
+  setFocusBtn(evt) {
+    console.log(evt);
   }
 
 }
