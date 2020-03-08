@@ -45,8 +45,14 @@ app.component.html
 
 
       ngOnInit() {
-        this.data1="The content is displayed from Demo1 component";
-        this.data2="The content is displayed from Demo2 component";
+        this.dataObj1 = {
+            heading: 'Modal Heading One',
+            content: 'Lorem Ipsum is simply dummy text of the printing and <a href="#">typesetting industry</a>.'
+        };
+        this.dataObj2 = {
+          heading: 'Modal Heading Two',
+          content: 'Lorem Ipsum is simply dummy text of the printing and <a href="#">typesetting industry</a>.'
+        };
       }
 
     }
@@ -121,14 +127,29 @@ modal.directive.ts
       ngOnInit() {
       }
 
+      openModal() {
+        console.log('Modal directive is called.');
+        this.modalElement = this.el.nativeElement;
+        console.log('modalElement => ', this.modalElement);
+        this.ren.setAttribute(this.modalElement, 'tabindex', '0');
+        this.ren.setAttribute(this.modalElement, 'aria-haspopup', 'true');
+        this.createModalDialog(ModalDialogComponent);
+      }
+
       createModalDialog(modalDialogComponent) {
+        console.log('CreateModalDialog is called');
         this.viewContainer.clear();
         const modalDialogComponentFactory = this.componentFactoryResolver.resolveComponentFactory(modalDialogComponent);
         const modalDialogComponentRef = this.viewContainer.createComponent(modalDialogComponentFactory);
         modalDialogComponentRef.instance['title'] = this.title;
         modalDialogComponentRef.instance['componentData'] = this.componentData;
         modalDialogComponentRef.instance['componentName'] = this.componentName;
-
+        modalDialogComponentRef.instance['close'].subscribe(event => {
+          if (event === 'close') {
+            console.log(this.el.nativeElement);
+            this.el.nativeElement.focus();
+          }
+        });
         return modalDialogComponentRef;
       }
 
@@ -197,30 +218,55 @@ modal-dialog.component.ts
 
       public div = this.ren.createElement('div'); 
 
-      ngOnInit() {      
+      ngOnInit() {
+          console.log('Modal Component is called.');
+        }
 
-      }
+        ngAfterContentInit() {
+          this.ren.addClass(this.el.nativeElement.ownerDocument.body, 'modal-open');
+          this.ren.insertBefore(this.el.nativeElement.children[0], this.div, this.el.nativeElement.children[0].children[0]);
+          this.ren.setAttribute(this.div , 'class', 'modal-backdrop fade in');
+          this.ren.setAttribute(this.div , 'tabindex', '-1');
+          this.createModalPopup();
+          console.log(this.el.nativeElement.children[0]);
+        }
 
-      ngAfterContentInit(){
-        this.ren.addClass(this.el.nativeElement.ownerDocument.body, 'modal-open');
-        this.ren.appendChild(this.el.nativeElement, this.div);
-        this.ren.setAttribute(this.div , 'class', 'modal-backdrop fade in');
-        this.createModalPopup();
-      }
+        ngAfterViewInit() {
+          this.ren.listen(this.overlayDiv, 'click', (event) => {
+            this.closeModal();
+          });
+          this.ren.listen(this.el.nativeElement, 'keydown', (event) => {
+            console.log('event keydown => ', event);
+            if (event.keyCode === 27 || event.key === 'Escape' || event.which === 27) { // ESCAPE key from keyboard
+              this.closeModal();
+              event.preventDefault();
+            }
+          });
+        }
 
-      createModalPopup(){
-        const name = this.loaderService.getComponent(this.componentName);
-        console.log("Component Name => ",name);
-        const myFactory = this.resolver.resolveComponentFactory(<any>name);
-        const myRef = this.entry.createComponent(myFactory);
-        myRef.instance['data'] = this.componentData;
-      }
+        createModalPopup() {
+          console.log('createModalPopup is called.');
+          const name = this.loaderService.getComponent(this.componentName);
+          console.log('Component Name => ', name);
+          const myFactory = this.resolver.resolveComponentFactory(<any>name);
+          const myRef = this.entry.createComponent(myFactory);
+          myRef.instance['data'] = this.componentData;
+          this.overlayDiv = this.el.nativeElement.children[0];
+          console.log('overlayDiv => ', this.el.nativeElement.children[0]);
+          this.setFocus();
+        }
 
-      closeModal() {
-        this.ren.removeClass(this.el.nativeElement.ownerDocument.body, 'modal-open');
-        this.ren.removeChild(this.el.nativeElement, this.div);
-        this.el.nativeElement.remove();
-      }
+        setFocus() {
+          const focusDiv = this.el.nativeElement.children[0].children[1].children[0];
+          console.log('focusDiv => ', focusDiv);
+          focusDiv.focus();
+        }
+
+        closeModal() {
+          this.ren.removeClass(this.el.nativeElement.ownerDocument.body, 'modal-open');
+          this.el.nativeElement.remove();
+          this.close.emit('close');
+        }
 
 
     }
