@@ -157,6 +157,8 @@ modal.directive.ts
     }
 createModalDialog() function is used to create modal dialog componenet dynamically. You have to send modalDialogComponent through resolveComponenetFactory to create factory then will create component using createComponent function. We are fetching values of title, componentData, componentName from buttons which were declared in app.componenet.html. These value sends using modalDialogComponentRef.instance to modal-dialog.componenet.ts. 
 
+modalDialogComponentRef.instance['close'] ------ fetch close emitter emit value in modal directive using subscribe function which tells you that modal is closed now. if emit value is 'close' then focus will be shifted on the button.
+
 Modal Dialog Component
 modal-dialog.component.css
 
@@ -274,6 +276,7 @@ modal-dialog.component.ts
     }
 
 this.ren.addClass is used to add 'modal-open' class on creating modal-dialog. this.ren.appendChild is used append div in body. this.ren.setAttribute is used to add class name 'modal-backdrop fade in' in div which shows when modal-dialog opens for overlay. 
+ren.listen is used to listen the event which was fired.
 
 this.createModalPopup() is called for loading component dynamically. Component is coming from buttons of app.componenet.html page and this.componentName is used to hold componenent name. loaderService is used to pass a component according to the component name. That component is passing to the resolveComponentFactory, createComponent function to create the component accordingly. We are passing the componentData using myRef.instance['data'] to component like demo1 or demo2.
 
