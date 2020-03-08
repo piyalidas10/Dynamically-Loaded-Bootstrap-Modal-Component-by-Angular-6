@@ -166,30 +166,30 @@ modal-dialog.component.css
 modal-dialog.component.html
 
     <!-- Modal -->
-    <div class="modal fade in" role="dialog" tabindex="-1" aria-hidden="true" #thisModal>
-      <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" (click)="closeModal()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title">{{ title }}</h4>
-          </div>
-          <div class="modal-body">
-            <div #datacontainer></div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="closeModal()">Close</button>
+    <!-- Modal -->
+      <div class="modal-box" #modalBox>
+        <div class="modal" role="dialog" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog" tabindex="0" role="dialog" [attr.aria-label]="title">
+            <!-- Modal content-->
+              <div class="modal-header">
+                <button type="button" aria-label="Close" tabindex="0" class="close" (click)="closeModal()">
+                  <span aria-hidden="true">&times;</span>
+                  <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">{{ title }}</h4>
+              </div>
+              <div class="modal-body" tabindex="-1">
+                <div #datacontainer></div>
+              </div>
           </div>
         </div>
 
-      </div>
 
 modal-dialog.component.ts
 
     import {
-      Component, Input, OnInit,
-      ComponentFactoryResolver, ViewContainerRef, ViewChild, ElementRef, Renderer2, AfterContentInit
+      Component, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ViewChild,
+      ElementRef, Renderer2, AfterContentInit, EventEmitter, Output, HostListener, OnChanges, AfterViewInit
     } from '@angular/core';
     import { ComponentLoaderService } from '../component-loader.service';
 
@@ -200,11 +200,13 @@ modal-dialog.component.ts
       styleUrls: ['./modal-dialog.component.css']
     })
 
-    export class ModalDialogComponent implements OnInit, AfterContentInit {
+    export class ModalDialogComponent implements OnInit, AfterContentInit, AfterViewInit {
       @Input() title: string;
       @Input() componentData: string;
       @Input() componentName: any;
-      public name : any;
+      @Output() close = new EventEmitter<any>();
+      public name: any;
+      public overlayDiv: any;
 
       @ViewChild('datacontainer', { read: ViewContainerRef }) entry: ViewContainerRef;
 
