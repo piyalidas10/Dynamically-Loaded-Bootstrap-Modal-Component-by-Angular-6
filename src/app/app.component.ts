@@ -21,8 +21,4 @@ export class AppComponent implements OnInit {
   };
   }
 
-  setFocusBtn(evt) {
-    console.log(evt);
-  }
-
 }

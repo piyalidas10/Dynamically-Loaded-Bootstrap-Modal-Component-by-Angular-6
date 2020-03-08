@@ -40,8 +40,8 @@ app.component.html
     app.component.ts
 
     export class AppComponent {
-      data1 : string;
-      data2 : string;
+      dataObj1: any;
+      dataObj2: any;
 
 
       ngOnInit() {

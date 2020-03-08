@@ -55,10 +55,5 @@ export class ModalDirective implements OnInit, OnChanges {
     return modalDialogComponentRef;
   }
 
-  @HostListener('blur', ['$event.target'])
-  onblur(target: any) {
-    console.log('Focus called from HostListener');
-  }
-
 
 }
